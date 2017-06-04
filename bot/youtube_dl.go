@@ -25,6 +25,7 @@ type YouTubeDL struct{}
 // Download downloads the audio associated with the incoming `track` object
 // and stores it `track.Filename`.
 func (yt *YouTubeDL) Download(t interfaces.Track) error {
+	t.GetWaitGroup().Add(1)
 	player := "--prefer-ffmpeg"
 	if viper.GetString("defaults.player_command") == "avconv" {
 		player = "--prefer-avconv"
@@ -42,8 +43,6 @@ func (yt *YouTubeDL) Download(t interfaces.Track) error {
 
 	// Check to see if track is already downloaded.
 	if _, err := os.Stat(filepath); os.IsNotExist(err) {
-		t.GetWaitGroup().Wait()
-		//waitgroup.wait here
 		logrus.WithFields(logrus.Fields{
 			"url": t.GetURL(),
 			"download-path": filepath,
@@ -65,14 +64,14 @@ func (yt *YouTubeDL) Download(t interfaces.Track) error {
 				args += cmd.Args[s] + " "
 			}
 			logrus.Warnf("%s\n%s\nyoutube-dl: %s", args, string(output), err.Error())
+			t.GetWaitGroup().Done()
 			return errors.New("Track download failed")
 		}
-		t.GetWaitGroup().Done()
 		if viper.GetBool("cache.enabled") {
 			DJ.Cache.CheckDirectorySize()
 		}
 	}
-
+	t.GetWaitGroup().Done()
 	return nil
 }
 

@@ -96,6 +96,6 @@ func (t Track) GetPlaylist() interfaces.Playlist {
 }
 
 // GetWaitGroup returns the WaitGroup the track is associated with.
-func(t Track) GetWaitGroup() sync.WaitGroup {
-	return t.WaitGroup
+func(t Track) GetWaitGroup() *sync.WaitGroup {
+	return &t.WaitGroup
 }

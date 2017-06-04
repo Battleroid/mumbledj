@@ -288,7 +288,7 @@ func (q *Queue) PlayCurrent() error {
 	if viper.GetString("defaults.player_command") == "avconv" {
 		DJ.AudioStream.Command = "avconv"
 	}
-
+	currentTrack.GetWaitGroup().Wait()
 	if viper.GetBool("queue.announce_new_tracks") {
 		message :=
 			`<table>
