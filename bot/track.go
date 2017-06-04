@@ -28,7 +28,7 @@ type Track struct {
 	Duration       time.Duration
 	PlaybackOffset time.Duration
 	Playlist       interfaces.Playlist
-	WaitGroup      sync.WaitGroup
+	WaitGroup      *sync.WaitGroup
 }
 
 // GetID returns the ID of the track.
@@ -97,5 +97,5 @@ func (t Track) GetPlaylist() interfaces.Playlist {
 
 // GetWaitGroup returns the WaitGroup the track is associated with.
 func(t Track) GetWaitGroup() *sync.WaitGroup {
-	return &t.WaitGroup
+	return t.WaitGroup
 }

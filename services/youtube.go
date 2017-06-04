@@ -231,8 +231,6 @@ func (yt *YouTube) getTrack(id string, submitter *gumble.User, offset time.Durat
 	durationString, _ := item.GetString("contentDetails", "duration")
 	durationConverted, _ := duration.FromString(durationString)
 	duration := durationConverted.ToDuration()
-	var wg sync.WaitGroup
-
 	return bot.Track{
 		ID:             id,
 		URL:            "https://youtube.com/watch?v=" + id,
@@ -245,6 +243,6 @@ func (yt *YouTube) getTrack(id string, submitter *gumble.User, offset time.Durat
 		Duration:       duration,
 		PlaybackOffset: offset,
 		Playlist:       nil,
-		WaitGroup:	wg,
+		WaitGroup:	&sync.WaitGroup{},
 	}, nil
 }

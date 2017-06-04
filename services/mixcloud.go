@@ -93,7 +93,6 @@ func (mc *Mixcloud) GetTracks(url string, submitter *gumble.User) ([]interfaces.
 		// Track has no artwork, using profile avatar instead.
 		thumbnail, _ = v.GetString("user", "pictures", "large")
 	}
-	var wg sync.WaitGroup
 	track := bot.Track{
 		ID:             id,
 		URL:            trackURL,
@@ -107,7 +106,7 @@ func (mc *Mixcloud) GetTracks(url string, submitter *gumble.User) ([]interfaces.
 		Duration:       duration,
 		PlaybackOffset: offset,
 		Playlist:       nil,
-		WaitGroup:	wg,
+		WaitGroup:	&sync.WaitGroup{},
 	}
 
 	tracks = append(tracks, track)
