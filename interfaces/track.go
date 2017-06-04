@@ -26,5 +26,5 @@ type Track interface {
 	GetDuration() time.Duration
 	GetPlaybackOffset() time.Duration
 	GetPlaylist() Playlist
-	GetWaitGroup() sync.WaitGroup
+	GetWaitGroup() *sync.WaitGroup
 }
