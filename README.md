@@ -20,7 +20,8 @@
 * [Thanks](#thanks)
 
 ## Important notice
-This is a fork of the original MumbleDJ made by Matthieu Grieger.
+This is a fork of the original MumbleDJ made by Matthieu Grieger.   
+Current main improvement is asynchronous song downloads.
 
 ## Features
 * Plays audio from many media websites, including YouTube, SoundCloud, and Mixcloud.
@@ -141,7 +142,7 @@ USAGE:
    mumbledj [global options] command [command options] [arguments...]
 
 VERSION:
-   v1.0.0
+   v4.0.0
 
 COMMANDS:
 GLOBAL OPTIONS:
