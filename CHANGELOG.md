@@ -1,6 +1,9 @@
 MumbleDJ Changelog
 ==================
 
+### Jun 6, 2017 -- `v4.0.1`
+* Add support for optional greeting messages when a user joins the bot's channel
+
 ### Jun 4, 2017 -- `v4.0.0`
 * Bump version to avoid confusion and fixed bug with asynchronous downloads
 

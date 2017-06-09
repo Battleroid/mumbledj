@@ -28,8 +28,8 @@ func SetDefaultConfig() {
 	viper.SetDefault("defaults.player_command", "ffmpeg")
 
 	// Queue defaults.
-	viper.SetDefault("queue.track_skip_ratio", 0.5)
-	viper.SetDefault("queue.playlist_skip_ratio", 0.5)
+	viper.SetDefault("queue.track_skip_ratio", 0)
+	viper.SetDefault("queue.playlist_skip_ratio", 0)
 	viper.SetDefault("queue.max_track_duration", 0)
 	viper.SetDefault("queue.max_tracks_per_playlist", 50)
 	viper.SetDefault("queue.automatic_shuffle_on", false)
@@ -52,14 +52,19 @@ func SetDefaultConfig() {
 	// Cache defaults.
 	viper.SetDefault("cache.enabled", false)
 	viper.SetDefault("cache.maximum_size", "512MiB")
-	viper.SetDefault("cache.expire_time", 24)
-	viper.SetDefault("cache.check_interval", 5)
+	viper.SetDefault("cache.expire_time", 48)
+	viper.SetDefault("cache.check_interval", 20)
 	viper.SetDefault("cache.directory", "$HOME/.cache/mumbledj")
 
+	// Greetings defaults.
+	viper.SetDefault("greetings.automatic_greetings_enabled", false)
+	viper.SetDefault("greetings.directory", "$HOME/.cache/mumbledj/greetings")
+	viper.SetDefault("greetings.default_filename", "greeting.mp3")
+
 	// Volume defaults.
-	viper.SetDefault("volume.default", 0.2)
-	viper.SetDefault("volume.lowest", 0.01)
-	viper.SetDefault("volume.highest", 0.8)
+	viper.SetDefault("volume.default", 0.15)
+	viper.SetDefault("volume.lowest", 0)
+	viper.SetDefault("volume.highest", 0.6)
 
 	// Admins defaults.
 	viper.SetDefault("admins.enabled", true)
@@ -110,6 +115,12 @@ func SetDefaultConfig() {
 	viper.SetDefault("commands.help.description", "Outputs this list of commands.")
 	viper.SetDefault("commands.help.messages.commands_header", "<br><b>Commands:</b><br>")
 	viper.SetDefault("commands.help.messages.admin_commands_header", "<br><b>Admin Commands:</b><br>")
+
+	viper.SetDefault("commands.greet.aliases", []string{"greet"})
+	viper.SetDefault("commands.greet.is_admin", false)
+	viper.SetDefault("commands.greet.description", "The default greeting audio file is missing.")
+	viper.SetDefault("commands.greet.messages.default_greeting_missing", "The default greeting audio file is missing.")
+	viper.SetDefault("commands.greet.messages.no_user_error", "A user must be supplied with the greet command.")
 
 	viper.SetDefault("commands.joinme.aliases", []string{"joinme", "join"})
 	viper.SetDefault("commands.joinme.is_admin", true)

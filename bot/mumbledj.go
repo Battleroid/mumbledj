@@ -22,8 +22,8 @@ import (
 	"layeh.com/gumble/gumble"
 	"layeh.com/gumble/gumbleffmpeg"
 	"layeh.com/gumble/gumbleutil"
-	"github.com/RichardNysater/mumbledj/interfaces"
 	"github.com/spf13/viper"
+	"github.com/RichardNysater/mumbledj/interfaces"
 )
 
 // MumbleDJ is a struct that keeps track of all aspects of the bot's state.
@@ -156,6 +156,12 @@ func (dj *MumbleDJ) OnUserChange(e *gumble.UserChangeEvent) {
 		}).Infoln("A user has disconnected or changed channels, updating skip trackers...")
 		dj.Skips.RemoveTrackSkip(e.User)
 		dj.Skips.RemovePlaylistSkip(e.User)
+	}
+	userChange := e.Type.Has(gumble.UserChangeConnected) || e.Type.Has(gumble.UserChangeChannel) && e.User.Channel == dj.Client.Self.Channel
+	if userChange && viper.GetBool("greetings.automatic_greetings_enabled") {
+		go func() {
+			dj.FindAndExecuteCommand(e.User, "greet "+e.User.Name)
+		}()
 	}
 }
 
