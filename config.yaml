@@ -98,16 +98,16 @@ connection:
 cache:
 
     # Cache songs as they are downloaded?
-    enabled: true
+    enabled: false
 
     # Maximum total file size of cache directory in MiB.
-    maximum_size: 1024
+    maximum_size: 512
 
     # Period of time that should elapse before a song is cleared from the cache, in hours.
     expire_time: 48
 
     # Period of time between each check of the cache for expired items, in minutes.
-    check_interval: 30
+    check_interval: 20
 
     # Directory to store cached items. Environment variables are able to be used here.
     directory: "$HOME/.cache/mumbledj"
@@ -124,6 +124,19 @@ volume:
     # Highest volume allowed.
     highest: 0.6
 
+greetings:
+
+    # Automatically play greeting messages when user's join the bot's channel
+    # NOTE: Will not play greeting if anything is currently playing
+    automatic_greetings_enabled: false
+
+    # Directory to store greeting audio files.
+    directory: "$HOME/.config/mumbledj/greetings"
+
+    # The file name of the default greeting which is played when no personal greeting is found.
+    # You can create personal greeting messages by naming a file the same name as the user.
+    # E.g. if my username is "Richard" then the bot will first try to play "Richard.mp3"
+    default_filename: "greeting.mp3"
 
 admins:
 
@@ -215,6 +228,15 @@ commands:
         messages:
             no_playlist_error: "The current track is not part of a playlist."
             playlist_skipped: "The current playlist has been forcibly skipped by <b>%s</b>."
+
+    greet:
+        aliases:
+            - "greet"
+        is_admin: false
+        description: "Greets a user"
+        messages:
+            default_greeting_missing: "The default greeting audio file is missing."
+            no_user_error: "A user must be supplied with the greet command."
 
     help:
         aliases:
