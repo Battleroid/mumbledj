@@ -25,6 +25,11 @@ type YouTubeDL struct{}
 // Download downloads the audio associated with the incoming `track` object
 // and stores it `track.Filename`.
 func (yt *YouTubeDL) Download(t interfaces.Track) error {
+	if t.GetService() == "LocalFile"{
+		logrus.Infoln("Local file does not need to be downloaded")
+		return nil
+	}
+
 	t.GetWaitGroup().Add(1)
 	player := "--prefer-ffmpeg"
 	if viper.GetString("defaults.player_command") == "avconv" {

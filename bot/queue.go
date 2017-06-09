@@ -270,46 +270,31 @@ func (q *Queue) SkipPlaylist() {
 // PlayCurrent creates a new audio stream and begins playing the current track.
 func (q *Queue) PlayCurrent() error {
 	currentTrack := q.GetTrack(0)
-	filepath := os.ExpandEnv(viper.GetString("cache.directory") + "/" + currentTrack.GetFilename())
-	if _, err := os.Stat(filepath); os.IsNotExist(err) {
-		logrus.Infoln("Track does not exist, need to download it...")
-		if err := DJ.YouTubeDL.Download(q.GetTrack(0)); err != nil {
-			return err
+	filepath := currentTrack.GetURL()
+	if currentTrack.GetService() != "LocalFile" {
+		filepath = os.ExpandEnv(viper.GetString("cache.directory") + "/" + currentTrack.GetFilename())
+		if _, err := os.Stat(filepath); os.IsNotExist(err) {
+			logrus.Infoln("Track does not exist, need to download it...")
+			if err := DJ.YouTubeDL.Download(q.GetTrack(0)); err != nil {
+				return err
+			}
+		}
+		if viper.GetBool("queue.announce_new_tracks") {
+			announceTrack(currentTrack)
 		}
 	}
 	logrus.WithFields(logrus.Fields{
 		"filepath": filepath,
 	}).Infoln("Preparing to play track...")
+
 	source := gumbleffmpeg.SourceFile(filepath)
 	DJ.AudioStream = gumbleffmpeg.New(DJ.Client, source)
 	DJ.AudioStream.Offset = currentTrack.GetPlaybackOffset()
 	DJ.AudioStream.Volume = DJ.Volume
-
 	if viper.GetString("defaults.player_command") == "avconv" {
 		DJ.AudioStream.Command = "avconv"
 	}
 	currentTrack.GetWaitGroup().Wait()
-	if viper.GetBool("queue.announce_new_tracks") {
-		message :=
-			`<table>
-			 	<tr>
-					<td align="center"><img src="%s" width=150 /></td>
-				</tr>
-				<tr>
-					<td align="center"><b><a href="%s">%s</a> (%s)</b></td>
-				</tr>
-				<tr>
-					<td align="center">Added by %s</td>
-				</tr>
-			`
-		message = fmt.Sprintf(message, currentTrack.GetThumbnailURL(), currentTrack.GetURL(),
-			currentTrack.GetTitle(), currentTrack.GetDuration().String(), currentTrack.GetSubmitter())
-		if currentTrack.GetPlaylist() != nil {
-			message = fmt.Sprintf(message+`<tr><td align="center">From playlist "%s"</td></tr>`, currentTrack.GetPlaylist().GetTitle())
-		}
-		message += `</table>`
-		DJ.Client.Self.Channel.Send(message, false)
-	}
 
 	logrus.Infoln("Playing track...")
 	DJ.AudioStream.Play()
@@ -317,7 +302,6 @@ func (q *Queue) PlayCurrent() error {
 		DJ.AudioStream.Wait()
 		q.Skip()
 	}()
-
 	return nil
 }
 
@@ -364,4 +348,26 @@ func (q *Queue) playIfNeeded() error {
 		}
 	}
 	return nil
+}
+
+func announceTrack(track interfaces.Track) {
+	message :=
+		`<table>
+			 <tr>
+				<td align="center"><img src="%s" width=150 /></td>
+			</tr>
+			<tr>
+				<td align="center"><b><a href="%s">%s</a> (%s)</b></td>
+			</tr>
+			<tr>
+				<td align="center">Added by %s</td>
+			</tr>
+		`
+	message = fmt.Sprintf(message, track.GetThumbnailURL(), track.GetURL(),
+		track.GetTitle(), track.GetDuration().String(), track.GetSubmitter())
+	if track.GetPlaylist() != nil {
+		message = fmt.Sprintf(message+`<tr><td align="center">From playlist "%s"</td></tr>`, track.GetPlaylist().GetTitle())
+	}
+	message += `</table>`
+	DJ.Client.Self.Channel.Send(message, false)
 }
