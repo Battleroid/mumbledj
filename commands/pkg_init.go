@@ -26,6 +26,7 @@ func init() {
 		new(CurrentTrackCommand),
 		new(ForceSkipCommand),
 		new(ForceSkipPlaylistCommand),
+		new(GreetCommand),
 		new(HelpCommand),
 		new(JoinMeCommand),
 		new(KillCommand),

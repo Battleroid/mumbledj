@@ -142,7 +142,7 @@ USAGE:
    mumbledj [global options] command [command options] [arguments...]
 
 VERSION:
-   v4.0.0
+   v4.0.1
 
 COMMANDS:
 GLOBAL OPTIONS:
@@ -166,10 +166,10 @@ GLOBAL OPTIONS:
 __NOTE__: You can also override all settings found within `config.yaml` directly from the commandline. Here's an example:
 
 ```
-mumbledj --admins.names="SuperUser,Matt" --volume.default="0.5" --volume.lowest="0.2" --queue.automatic_shuffle_on="true"
+mumbledj --admins.names="SuperUser,Richard" --volume.default="0.5" --volume.lowest="0.2" --queue.automatic_shuffle_on="true"
 ```
 
-Keep in mind that values that contain commas (such as `"SuperUser,Matt"`) will be interpreted as string slices, or arrays if you are not familiar with Go. If you want your value to be interpreted as a normal string, it is best to avoid commas for now.
+Keep in mind that values that contain commas (such as `"SuperUser,Richard"`) will be interpreted as string slices, or arrays if you are not familiar with Go. If you want your value to be interpreted as a normal string, it is best to avoid commas for now.
 
 ## Commands
 
@@ -214,6 +214,13 @@ Keep in mind that values that contain commas (such as `"SuperUser,Matt"`) will b
 * __Arguments__: None
 * __Admin-only by default__: Yes
 * __Example__: `!forceskipplaylist`
+
+### greet
+* __Description__: Greets a user by playing the personal or default greeting file
+* __Default Aliases__: greet
+* __Arguments__: (Required) The username of the user to greet
+* __Admin-only by default__: No
+* __Example__: `!greet Richard`
 
 ### help
 * __Description__: Outputs a list of available commands and their descriptions.
