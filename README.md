@@ -19,9 +19,11 @@
 * [License](#license)
 * [Thanks](#thanks)
 
-## Important notice
-This is a fork of the original MumbleDJ made by Matthieu Grieger.   
-Current main improvement is asynchronous song downloads.
+## Notice
+This is a continuation of the original MumbleDJ made by Matthieu Grieger.   
+Current main improvements:
+* Asynchronous song downloads.
+* Personalized greetings when joining bot's channel (optional).
 
 ## Features
 * Plays audio from many media websites, including YouTube, SoundCloud, and Mixcloud.
