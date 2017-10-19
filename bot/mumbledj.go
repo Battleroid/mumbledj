@@ -157,7 +157,7 @@ func (dj *MumbleDJ) OnUserChange(e *gumble.UserChangeEvent) {
 		dj.Skips.RemoveTrackSkip(e.User)
 		dj.Skips.RemovePlaylistSkip(e.User)
 	}
-	userChange := e.Type.Has(gumble.UserChangeConnected) || e.Type.Has(gumble.UserChangeChannel) && e.User.Channel == dj.Client.Self.Channel
+	userChange := (e.Type.Has(gumble.UserChangeConnected) || e.Type.Has(gumble.UserChangeChannel)) && e.User.Channel == dj.Client.Self.Channel
 	if userChange && viper.GetBool("greetings.automatic_greetings_enabled") {
 		go func() {
 			dj.FindAndExecuteCommand(e.User, "greet "+e.User.Name)
